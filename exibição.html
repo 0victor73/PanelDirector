@@ -35,7 +35,8 @@
         { color: '#FFC858', enabled: true },
         { color: '#17E7FF', enabled: true },
         { color: '#6D3BFF', enabled: true },
-        { color: '#2BE19A', enabled: true }
+        { color: '#2BE19A', enabled: true },
+        { color: '#2E0EC7', enabled: true }
       ],
       speed: 4,
       waveAmplitude: 5,
@@ -48,8 +49,18 @@
       colorBrightness: 1,
       shadows: 0,
       highlights: 5,
+      resolution: 1,
+      grainIntensity: 0,
+      grainScale: 2,
+      grainSpeed: 1,
       backgroundColor: '#003FFF',
-      wireframe: false
+      backgroundAlpha: 1,
+      wireframe: false,
+      flowEnabled: true,
+      flowDistortionA: 0,
+      flowDistortionB: 0,
+      flowScale: 1,
+      flowEase: 0
     };
 
     // Tentar restaurar última configuração salva
@@ -85,12 +96,15 @@
           neat.colors = config.colors;
         }
 
-        // Atualizar propriedades numéricas
+        // Atualizar todas as propriedades numéricas
         const numericProps = [
           'speed', 'waveAmplitude', 'waveFrequencyX', 'waveFrequencyY',
           'horizontalPressure', 'verticalPressure',
           'colorBlending', 'colorSaturation', 'colorBrightness',
-          'shadows', 'highlights'
+          'shadows', 'highlights', 'resolution',
+          'grainIntensity', 'grainScale', 'grainSpeed',
+          'backgroundAlpha',
+          'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase'
         ];
 
         numericProps.forEach(prop => {
@@ -104,10 +118,13 @@
           neat.backgroundColor = config.backgroundColor;
         }
 
-        // Wireframe
-        if (typeof config.wireframe === 'boolean') {
-          neat.wireframe = config.wireframe;
-        }
+        // Propriedades booleanas
+        const boolProps = ['wireframe', 'flowEnabled'];
+        boolProps.forEach(prop => {
+          if (typeof config[prop] === 'boolean') {
+            neat[prop] = config[prop];
+          }
+        });
 
         // Salvar config recebida
         try {

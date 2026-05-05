@@ -16,14 +16,45 @@ const SLIDERS = [
   { id: 'colorBrightness', valId: 'colorBrightness-val', prop: 'colorBrightness' },
   { id: 'shadows', valId: 'shadows-val', prop: 'shadows' },
   { id: 'highlights', valId: 'highlights-val', prop: 'highlights' },
+  { id: 'resolution', valId: 'resolution-val', prop: 'resolution' },
+  { id: 'grainIntensity', valId: 'grainIntensity-val', prop: 'grainIntensity' },
+  { id: 'grainScale', valId: 'grainScale-val', prop: 'grainScale' },
+  { id: 'grainSpeed', valId: 'grainSpeed-val', prop: 'grainSpeed' },
+  { id: 'backgroundAlpha', valId: 'backgroundAlpha-val', prop: 'backgroundAlpha' },
+  { id: 'flowDistortionA', valId: 'flowDistortionA-val', prop: 'flowDistortionA' },
+  { id: 'flowDistortionB', valId: 'flowDistortionB-val', prop: 'flowDistortionB' },
+  { id: 'flowScale', valId: 'flowScale-val', prop: 'flowScale' },
+  { id: 'flowEase', valId: 'flowEase-val', prop: 'flowEase' },
+  // Procedural Texture
+  { id: 'textureEase', valId: 'textureEase-val', prop: 'textureEase' },
+  { id: 'textureVoidLikelihood', valId: 'textureVoidLikelihood-val', prop: 'textureVoidLikelihood' },
+  { id: 'textureVoidWidthMin', valId: 'textureVoidWidthMin-val', prop: 'textureVoidWidthMin' },
+  { id: 'textureVoidWidthMax', valId: 'textureVoidWidthMax-val', prop: 'textureVoidWidthMax' },
+  { id: 'textureBandDensity', valId: 'textureBandDensity-val', prop: 'textureBandDensity' },
+  { id: 'textureColorBlending', valId: 'textureColorBlending-val', prop: 'textureColorBlending' },
+  { id: 'textureSeed', valId: 'textureSeed-val', prop: 'textureSeed' },
+  { id: 'textureShapeTriangles', valId: 'textureShapeTriangles-val', prop: 'textureShapeTriangles' },
+  { id: 'textureShapeCircles', valId: 'textureShapeCircles-val', prop: 'textureShapeCircles' },
+  { id: 'textureShapeBars', valId: 'textureShapeBars-val', prop: 'textureShapeBars' },
+  { id: 'textureShapeSquiggles', valId: 'textureShapeSquiggles-val', prop: 'textureShapeSquiggles' },
 ];
+
+// Toggles (checkboxes que não são cores)
+const TOGGLES = [
+  { id: 'wireframe', prop: 'wireframe' },
+  { id: 'flowEnabled', prop: 'flowEnabled' },
+  { id: 'enableProceduralTexture', prop: 'enableProceduralTexture' },
+];
+
+// Número de cores
+const NUM_COLORS = 6;
 
 // ============================================================
 // Monta o objeto NeatConfig completo a partir dos controles
 // ============================================================
 function buildConfig() {
   const colors = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= NUM_COLORS; i++) {
     const colorEl = document.getElementById(`cor${i}`);
     const enabledEl = document.getElementById(`cor${i}-enabled`);
     if (colorEl) {
@@ -46,9 +77,15 @@ function buildConfig() {
   const bgEl = document.getElementById('backgroundColor');
   if (bgEl) config.backgroundColor = bgEl.value;
 
-  // Wireframe
-  const wfEl = document.getElementById('wireframe');
-  if (wfEl) config.wireframe = wfEl.checked;
+  // Procedural background color
+  const pbgEl = document.getElementById('proceduralBackgroundColor');
+  if (pbgEl) config.proceduralBackgroundColor = pbgEl.value;
+
+  // Toggles
+  TOGGLES.forEach(t => {
+    const el = document.getElementById(t.id);
+    if (el) config[t.prop] = el.checked;
+  });
 
   return config;
 }
@@ -89,7 +126,11 @@ function applyConfigToControls(config) {
       const el = document.getElementById(s.id);
       const valEl = document.getElementById(s.valId);
       if (el) el.value = config[s.prop];
-      if (valEl) valEl.textContent = parseFloat(config[s.prop]).toFixed(1);
+      if (valEl) {
+        const step = el ? parseFloat(el.step) : 0.1;
+        const decimals = step < 0.1 ? 2 : 1;
+        valEl.textContent = parseFloat(config[s.prop]).toFixed(decimals);
+      }
     }
   });
 
@@ -99,11 +140,19 @@ function applyConfigToControls(config) {
     if (bgEl) bgEl.value = config.backgroundColor;
   }
 
-  // Wireframe
-  if (typeof config.wireframe === 'boolean') {
-    const wfEl = document.getElementById('wireframe');
-    if (wfEl) wfEl.checked = config.wireframe;
+  // Procedural background color
+  if (config.proceduralBackgroundColor) {
+    const pbgEl = document.getElementById('proceduralBackgroundColor');
+    if (pbgEl) pbgEl.value = config.proceduralBackgroundColor;
   }
+
+  // Toggles
+  TOGGLES.forEach(t => {
+    if (typeof config[t.prop] === 'boolean') {
+      const el = document.getElementById(t.id);
+      if (el) el.checked = config[t.prop];
+    }
+  });
 }
 
 // ============================================================
@@ -116,21 +165,16 @@ const PRESETS = {
       { color: '#2d3a8c', enabled: true },
       { color: '#4a5ac7', enabled: true },
       { color: '#7b68ee', enabled: true },
-      { color: '#b392f0', enabled: false }
+      { color: '#b392f0', enabled: false },
+      { color: '#e0d4ff', enabled: false }
     ],
-    speed: 1.5,
-    waveAmplitude: 3,
-    waveFrequencyX: 2,
-    waveFrequencyY: 2,
-    horizontalPressure: 3,
-    verticalPressure: 4,
-    colorBlending: 8,
-    colorSaturation: -2,
-    colorBrightness: 0.8,
-    shadows: 3,
-    highlights: 4,
-    backgroundColor: '#0a0a2e',
-    wireframe: false
+    speed: 1.5, waveAmplitude: 3, waveFrequencyX: 2, waveFrequencyY: 2,
+    horizontalPressure: 3, verticalPressure: 4, colorBlending: 8,
+    colorSaturation: -2, colorBrightness: 0.8, shadows: 3, highlights: 4,
+    resolution: 1, grainIntensity: 0.05, grainScale: 2, grainSpeed: 1,
+    backgroundColor: '#0a0a2e', backgroundAlpha: 1,
+    wireframe: false, flowEnabled: true,
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
   },
   celebracao: {
     colors: [
@@ -138,21 +182,16 @@ const PRESETS = {
       { color: '#f2c94c', enabled: true },
       { color: '#eb5757', enabled: true },
       { color: '#ff6b6b', enabled: true },
-      { color: '#ffd93d', enabled: true }
+      { color: '#ffd93d', enabled: true },
+      { color: '#ff9ff3', enabled: false }
     ],
-    speed: 5,
-    waveAmplitude: 7,
-    waveFrequencyX: 4,
-    waveFrequencyY: 3,
-    horizontalPressure: 4,
-    verticalPressure: 3,
-    colorBlending: 6,
-    colorSaturation: 3,
-    colorBrightness: 1.3,
-    shadows: 1,
-    highlights: 7,
-    backgroundColor: '#ff6600',
-    wireframe: false
+    speed: 5, waveAmplitude: 7, waveFrequencyX: 4, waveFrequencyY: 3,
+    horizontalPressure: 4, verticalPressure: 3, colorBlending: 6,
+    colorSaturation: 3, colorBrightness: 1.3, shadows: 1, highlights: 7,
+    resolution: 1, grainIntensity: 0, grainScale: 2, grainSpeed: 1,
+    backgroundColor: '#ff6600', backgroundAlpha: 1,
+    wireframe: false, flowEnabled: true,
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
   },
   pregacao: {
     colors: [
@@ -160,21 +199,16 @@ const PRESETS = {
       { color: '#636e72', enabled: true },
       { color: '#b2bec3', enabled: true },
       { color: '#dfe6e9', enabled: false },
-      { color: '#74b9ff', enabled: true }
+      { color: '#74b9ff', enabled: true },
+      { color: '#a29bfe', enabled: false }
     ],
-    speed: 1,
-    waveAmplitude: 2,
-    waveFrequencyX: 1.5,
-    waveFrequencyY: 2,
-    horizontalPressure: 3,
-    verticalPressure: 3,
-    colorBlending: 7,
-    colorSaturation: -3,
-    colorBrightness: 0.7,
-    shadows: 4,
-    highlights: 3,
-    backgroundColor: '#1a1a2e',
-    wireframe: false
+    speed: 1, waveAmplitude: 2, waveFrequencyX: 1.5, waveFrequencyY: 2,
+    horizontalPressure: 3, verticalPressure: 3, colorBlending: 7,
+    colorSaturation: -3, colorBrightness: 0.7, shadows: 4, highlights: 3,
+    resolution: 1, grainIntensity: 0.1, grainScale: 3, grainSpeed: 0.5,
+    backgroundColor: '#1a1a2e', backgroundAlpha: 1,
+    wireframe: false, flowEnabled: true,
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
   },
   ceu: {
     colors: [
@@ -182,21 +216,16 @@ const PRESETS = {
       { color: '#1a1a5e', enabled: true },
       { color: '#4a1a8a', enabled: true },
       { color: '#2e0854', enabled: true },
-      { color: '#000033', enabled: true }
+      { color: '#000033', enabled: true },
+      { color: '#0a0a2e', enabled: false }
     ],
-    speed: 0.8,
-    waveAmplitude: 4,
-    waveFrequencyX: 1,
-    waveFrequencyY: 1.5,
-    horizontalPressure: 2,
-    verticalPressure: 5,
-    colorBlending: 9,
-    colorSaturation: 1,
-    colorBrightness: 0.6,
-    shadows: 6,
-    highlights: 2,
-    backgroundColor: '#000011',
-    wireframe: false
+    speed: 0.8, waveAmplitude: 4, waveFrequencyX: 1, waveFrequencyY: 1.5,
+    horizontalPressure: 2, verticalPressure: 5, colorBlending: 9,
+    colorSaturation: 1, colorBrightness: 0.6, shadows: 6, highlights: 2,
+    resolution: 1, grainIntensity: 0.15, grainScale: 2, grainSpeed: 0.3,
+    backgroundColor: '#000011', backgroundAlpha: 1,
+    wireframe: false, flowEnabled: true,
+    flowDistortionA: 1, flowDistortionB: 0.5, flowScale: 2, flowEase: 0.3
   },
   fogo: {
     colors: [
@@ -204,21 +233,16 @@ const PRESETS = {
       { color: '#ff4500', enabled: true },
       { color: '#ff8c00', enabled: true },
       { color: '#ffd700', enabled: true },
-      { color: '#8b0000', enabled: true }
+      { color: '#8b0000', enabled: true },
+      { color: '#4a0000', enabled: false }
     ],
-    speed: 6,
-    waveAmplitude: 8,
-    waveFrequencyX: 5,
-    waveFrequencyY: 4,
-    horizontalPressure: 5,
-    verticalPressure: 6,
-    colorBlending: 4,
-    colorSaturation: 5,
-    colorBrightness: 1.4,
-    shadows: 2,
-    highlights: 8,
-    backgroundColor: '#1a0000',
-    wireframe: false
+    speed: 6, waveAmplitude: 8, waveFrequencyX: 5, waveFrequencyY: 4,
+    horizontalPressure: 5, verticalPressure: 6, colorBlending: 4,
+    colorSaturation: 5, colorBrightness: 1.4, shadows: 2, highlights: 8,
+    resolution: 1, grainIntensity: 0, grainScale: 2, grainSpeed: 1,
+    backgroundColor: '#1a0000', backgroundAlpha: 1,
+    wireframe: false, flowEnabled: true,
+    flowDistortionA: 2, flowDistortionB: 1, flowScale: 3, flowEase: 0.1
   }
 };
 
@@ -232,14 +256,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const valEl = document.getElementById(s.valId);
     if (el) {
       el.addEventListener('input', () => {
-        if (valEl) valEl.textContent = parseFloat(el.value).toFixed(1);
+        if (valEl) {
+          const step = parseFloat(el.step);
+          const decimals = step < 0.1 ? 2 : 1;
+          valEl.textContent = parseFloat(el.value).toFixed(decimals);
+        }
         sync();
       });
     }
   });
 
   // Vincular eventos aos color pickers
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= NUM_COLORS; i++) {
     const colorEl = document.getElementById(`cor${i}`);
     const enabledEl = document.getElementById(`cor${i}-enabled`);
     if (colorEl) colorEl.addEventListener('input', sync);
@@ -250,9 +278,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgEl = document.getElementById('backgroundColor');
   if (bgEl) bgEl.addEventListener('input', sync);
 
-  // Wireframe
-  const wfEl = document.getElementById('wireframe');
-  if (wfEl) wfEl.addEventListener('change', sync);
+  // Procedural background color
+  const pbgEl = document.getElementById('proceduralBackgroundColor');
+  if (pbgEl) pbgEl.addEventListener('input', sync);
+
+  // Toggles
+  TOGGLES.forEach(t => {
+    const el = document.getElementById(t.id);
+    if (el) el.addEventListener('change', sync);
+  });
 
   // Botões de preset temático
   document.querySelectorAll('[data-preset]').forEach(btn => {
@@ -335,14 +369,4 @@ function initSlots() {
   });
 
   updateTitles();
-
-  // Restaurar slot ativo
-  const persistedSlot = localStorage.getItem('neat_active_slot');
-  if (persistedSlot && slots[persistedSlot]) {
-    const btn = document.querySelector(`.botao-salvo[data-slot="${persistedSlot}"]`);
-    if (btn) {
-      btn.classList.add('ativo');
-      activeSlot = persistedSlot;
-    }
-  }
 }
