@@ -1,212 +1,220 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Controle - LED</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle - LED</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- Cabeçalho -->
-  <div class="cabecalho">
-    <div class="painel-tema">
-      <h5>🎛️ Painel LED</h5>
-    </div>
-  </div>
-
-  <!-- Painel: Cores -->
-  <div class="painel" id="painel-cores">
-    <div class="painel-header">
-      <h3 class="painel-titulo">Cores</h3>
-    </div>
-    <div class="painel-body">
-      <div class="color-row">
-        <label>Cor 1</label>
-        <label class="switch"><input type="checkbox" id="cor1-enabled" checked><span class="slider-toggle"></span></label>
-        <input type="color" id="cor1" value="#FF5373">
-      </div>
-      <div class="color-row">
-        <label>Cor 2</label>
-        <label class="switch"><input type="checkbox" id="cor2-enabled" checked><span class="slider-toggle"></span></label>
-        <input type="color" id="cor2" value="#FFC858">
-      </div>
-      <div class="color-row">
-        <label>Cor 3</label>
-        <label class="switch"><input type="checkbox" id="cor3-enabled" checked><span class="slider-toggle"></span></label>
-        <input type="color" id="cor3" value="#17E7FF">
-      </div>
-      <div class="color-row">
-        <label>Cor 4</label>
-        <label class="switch"><input type="checkbox" id="cor4-enabled" checked><span class="slider-toggle"></span></label>
-        <input type="color" id="cor4" value="#6D3BFF">
-      </div>
-      <div class="color-row">
-        <label>Cor 5</label>
-        <label class="switch"><input type="checkbox" id="cor5-enabled" checked><span class="slider-toggle"></span></label>
-        <input type="color" id="cor5" value="#2BE19A">
-      </div>
-
-      <div class="color-row" style="margin-top: 8px;">
-        <label>Background</label>
-        <input type="color" id="backgroundColor" value="#003FFF">
-      </div>
-    </div>
-  </div>
-
-  <!-- Painel: Animação Principal -->
-  <div class="painel" id="painel-animacao">
-    <div class="painel-header">
-      <h3 class="painel-titulo">Animação</h3>
-    </div>
-    <div class="painel-body">
-      <!-- Speed -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Speed</label>
-          <span class="slider-value" id="speed-val">4</span>
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+        <div class="painel-tema">
+            <h5>PanelDirector</h5>
         </div>
-        <input type="range" class="slider-range" id="speed" min="0" max="10" step="0.1" value="4">
-      </div>
-
-      <!-- Wave Amplitude -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Wave Amplitude</label>
-          <span class="slider-value" id="waveAmplitude-val">5</span>
-        </div>
-        <input type="range" class="slider-range" id="waveAmplitude" min="0" max="10" step="0.1" value="5">
-      </div>
-
-      <!-- Wave Frequency X -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Wave Frequency X</label>
-          <span class="slider-value" id="waveFrequencyX-val">2</span>
-        </div>
-        <input type="range" class="slider-range" id="waveFrequencyX" min="0" max="10" step="0.1" value="2">
-      </div>
-
-      <!-- Wave Frequency Y -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Wave Frequency Y</label>
-          <span class="slider-value" id="waveFrequencyY-val">3</span>
-        </div>
-        <input type="range" class="slider-range" id="waveFrequencyY" min="0" max="10" step="0.1" value="3">
-      </div>
     </div>
-  </div>
 
-  <!-- Painel: Cores & Distribuição -->
-  <div class="painel" id="painel-distribuicao">
-    <div class="painel-header">
-      <h3 class="painel-titulo">Distribuição de Cor</h3>
+    <!-- Painel: Cores -->
+    <div class="painel" id="painel-cores">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Cores</h3>
+        </div>
+        <div class="painel-body">
+            <div class="color-row">
+                <label>Cor 1</label>
+                <label class="switch"><input type="checkbox" id="cor1-enabled" checked><span
+                        class="slider-toggle"></span></label>
+                <input type="color" id="cor1" value="#FF5373">
+            </div>
+            <div class="color-row">
+                <label>Cor 2</label>
+                <label class="switch"><input type="checkbox" id="cor2-enabled" checked><span
+                        class="slider-toggle"></span></label>
+                <input type="color" id="cor2" value="#FFC858">
+            </div>
+            <div class="color-row">
+                <label>Cor 3</label>
+                <label class="switch"><input type="checkbox" id="cor3-enabled" checked><span
+                        class="slider-toggle"></span></label>
+                <input type="color" id="cor3" value="#17E7FF">
+            </div>
+            <div class="color-row">
+                <label>Cor 4</label>
+                <label class="switch"><input type="checkbox" id="cor4-enabled" checked><span
+                        class="slider-toggle"></span></label>
+                <input type="color" id="cor4" value="#6D3BFF">
+            </div>
+            <div class="color-row">
+                <label>Cor 5</label>
+                <label class="switch"><input type="checkbox" id="cor5-enabled" checked><span
+                        class="slider-toggle"></span></label>
+                <input type="color" id="cor5" value="#2BE19A">
+            </div>
+
+            <div class="color-row" style="margin-top: 8px;">
+                <label>Background</label>
+                <input type="color" id="backgroundColor" value="#003FFF">
+            </div>
+        </div>
     </div>
-    <div class="painel-body">
-      <!-- Horizontal Pressure -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Horizontal Pressure</label>
-          <span class="slider-value" id="horizontalPressure-val">3</span>
-        </div>
-        <input type="range" class="slider-range" id="horizontalPressure" min="0" max="10" step="0.1" value="3">
-      </div>
 
-      <!-- Vertical Pressure -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Vertical Pressure</label>
-          <span class="slider-value" id="verticalPressure-val">3</span>
+    <!-- Painel: Animação Principal -->
+    <div class="painel" id="painel-animacao">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Animação</h3>
         </div>
-        <input type="range" class="slider-range" id="verticalPressure" min="0" max="10" step="0.1" value="3">
-      </div>
+        <div class="painel-body">
+            <!-- Speed -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Speed</label>
+                    <span class="slider-value" id="speed-val">4</span>
+                </div>
+                <input type="range" class="slider-range" id="speed" min="0" max="10" step="0.1" value="4">
+            </div>
 
-      <!-- Color Blending -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Color Blending</label>
-          <span class="slider-value" id="colorBlending-val">5</span>
-        </div>
-        <input type="range" class="slider-range" id="colorBlending" min="0" max="10" step="0.1" value="5">
-      </div>
+            <!-- Wave Amplitude -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Wave Amplitude</label>
+                    <span class="slider-value" id="waveAmplitude-val">5</span>
+                </div>
+                <input type="range" class="slider-range" id="waveAmplitude" min="0" max="10" step="0.1" value="5">
+            </div>
 
-      <!-- Color Saturation -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Color Saturation</label>
-          <span class="slider-value" id="colorSaturation-val">0</span>
-        </div>
-        <input type="range" class="slider-range" id="colorSaturation" min="-10" max="10" step="0.1" value="0">
-      </div>
+            <!-- Wave Frequency X -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Wave Frequency X</label>
+                    <span class="slider-value" id="waveFrequencyX-val">2</span>
+                </div>
+                <input type="range" class="slider-range" id="waveFrequencyX" min="0" max="10" step="0.1" value="2">
+            </div>
 
-      <!-- Color Brightness -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Color Brightness</label>
-          <span class="slider-value" id="colorBrightness-val">1</span>
+            <!-- Wave Frequency Y -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Wave Frequency Y</label>
+                    <span class="slider-value" id="waveFrequencyY-val">3</span>
+                </div>
+                <input type="range" class="slider-range" id="waveFrequencyY" min="0" max="10" step="0.1" value="3">
+            </div>
         </div>
-        <input type="range" class="slider-range" id="colorBrightness" min="0" max="2" step="0.01" value="1">
-      </div>
     </div>
-  </div>
 
-  <!-- Painel: Efeitos Visuais -->
-  <div class="painel" id="painel-efeitos">
-    <div class="painel-header">
-      <h3 class="painel-titulo">Efeitos Visuais</h3>
-    </div>
-    <div class="painel-body">
-      <!-- Shadows -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Shadows</label>
-          <span class="slider-value" id="shadows-val">0</span>
+    <!-- Painel: Cores & Distribuição -->
+    <div class="painel" id="painel-distribuicao">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Distribuição de Cor</h3>
         </div>
-        <input type="range" class="slider-range" id="shadows" min="0" max="10" step="0.1" value="0">
-      </div>
+        <div class="painel-body">
+            <!-- Horizontal Pressure -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Horizontal Pressure</label>
+                    <span class="slider-value" id="horizontalPressure-val">3</span>
+                </div>
+                <input type="range" class="slider-range" id="horizontalPressure" min="0" max="10" step="0.1" value="3">
+            </div>
 
-      <!-- Highlights -->
-      <div class="slider-row">
-        <div class="slider-label-row">
-          <label>Highlights</label>
-          <span class="slider-value" id="highlights-val">5</span>
+            <!-- Vertical Pressure -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Vertical Pressure</label>
+                    <span class="slider-value" id="verticalPressure-val">3</span>
+                </div>
+                <input type="range" class="slider-range" id="verticalPressure" min="0" max="10" step="0.1" value="3">
+            </div>
+
+            <!-- Color Blending -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Color Blending</label>
+                    <span class="slider-value" id="colorBlending-val">5</span>
+                </div>
+                <input type="range" class="slider-range" id="colorBlending" min="0" max="10" step="0.1" value="5">
+            </div>
+
+            <!-- Color Saturation -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Color Saturation</label>
+                    <span class="slider-value" id="colorSaturation-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="colorSaturation" min="-10" max="10" step="0.1" value="0">
+            </div>
+
+            <!-- Color Brightness -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Color Brightness</label>
+                    <span class="slider-value" id="colorBrightness-val">1</span>
+                </div>
+                <input type="range" class="slider-range" id="colorBrightness" min="0" max="2" step="0.01" value="1">
+            </div>
         </div>
-        <input type="range" class="slider-range" id="highlights" min="0" max="10" step="0.1" value="5">
-      </div>
-
-      <!-- Wireframe -->
-      <div class="color-row">
-        <label>Wireframe</label>
-        <label class="switch"><input type="checkbox" id="wireframe"><span class="slider-toggle"></span></label>
-      </div>
     </div>
-  </div>
 
-  <!-- Painel: Presets Rápidos -->
-  <div class="painel" id="painel-presets">
-    <div class="painel-header">
-      <h3 class="painel-titulo">Presets</h3>
-    </div>
-    <div class="painel-body">
-      <div class="painel-botoes">
-        <button class="botao-salvo" data-slot="1" title="Duplo clique para salvar">1</button>
-        <button class="botao-salvo" data-slot="2" title="Duplo clique para salvar">2</button>
-        <button class="botao-salvo" data-slot="3" title="Duplo clique para salvar">3</button>
-        <button class="botao-salvo" data-slot="4" title="Duplo clique para salvar">4</button>
-        <button class="botao-salvo" data-slot="5" title="Duplo clique para salvar">5</button>
-        <button class="botao-salvo" data-slot="6" title="Duplo clique para salvar">6</button>
-      </div>
-      <div class="lista-botoes" style="margin-top: 10px;">
-        <button class="botao" data-preset="adoracao">🙏 Adoração</button>
-        <button class="botao" data-preset="celebracao">🎉 Celebração</button>
-        <button class="botao" data-preset="pregacao">📖 Pregação</button>
-        <button class="botao" data-preset="ceu">🌌 Céu Noturno</button>
-        <button class="botao" data-preset="fogo">🔥 Fogo</button>
-      </div>
-    </div>
-  </div>
+    <!-- Painel: Efeitos Visuais -->
+    <div class="painel" id="painel-efeitos">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Efeitos Visuais</h3>
+        </div>
+        <div class="painel-body">
+            <!-- Shadows -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Shadows</label>
+                    <span class="slider-value" id="shadows-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="shadows" min="0" max="10" step="0.1" value="0">
+            </div>
 
-  <script src="script.js"></script>
+            <!-- Highlights -->
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Highlights</label>
+                    <span class="slider-value" id="highlights-val">5</span>
+                </div>
+                <input type="range" class="slider-range" id="highlights" min="0" max="10" step="0.1" value="5">
+            </div>
+
+            <!-- Wireframe -->
+            <div class="color-row">
+                <label>Wireframe</label>
+                <label class="switch"><input type="checkbox" id="wireframe"><span class="slider-toggle"></span></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel: Presets Rápidos -->
+    <div class="painel" id="painel-presets">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Presets</h3>
+        </div>
+        <div class="painel-body">
+            <div class="painel-botoes">
+                <button class="botao-salvo" data-slot="1" title="Duplo clique para salvar">1</button>
+                <button class="botao-salvo" data-slot="2" title="Duplo clique para salvar">2</button>
+                <button class="botao-salvo" data-slot="3" title="Duplo clique para salvar">3</button>
+                <button class="botao-salvo" data-slot="4" title="Duplo clique para salvar">4</button>
+                <button class="botao-salvo" data-slot="5" title="Duplo clique para salvar">5</button>
+                <button class="botao-salvo" data-slot="6" title="Duplo clique para salvar">6</button>
+            </div>
+            <div class="lista-botoes" style="margin-top: 10px;">
+                <button class="botao" data-preset="adoracao">🙏 Adoração</button>
+                <button class="botao" data-preset="celebracao">🎉 Celebração</button>
+                <button class="botao" data-preset="pregacao">📖 Pregação</button>
+                <button class="botao" data-preset="ceu">🌌 Céu Noturno</button>
+                <button class="botao" data-preset="fogo">🔥 Fogo</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
