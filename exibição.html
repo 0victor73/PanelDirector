@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exibição - LED</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas#gradient {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="gradient"></canvas>
+
+  <script type="module">
+    import { NeatGradient } from 'https://cdn.jsdelivr.net/npm/@firecms/neat/+esm';
+
+    // ============================================================
+    // Configuração padrão inicial
+    // ============================================================
+    const defaultConfig = {
+      colors: [
+        { color: '#FF5373', enabled: true },
+        { color: '#FFC858', enabled: true },
+        { color: '#17E7FF', enabled: true },
+        { color: '#6D3BFF', enabled: true },
+        { color: '#2BE19A', enabled: true }
+      ],
+      speed: 4,
+      waveAmplitude: 5,
+      waveFrequencyX: 2,
+      waveFrequencyY: 3,
+      horizontalPressure: 3,
+      verticalPressure: 3,
+      colorBlending: 5,
+      colorSaturation: 0,
+      colorBrightness: 1,
+      shadows: 0,
+      highlights: 5,
+      backgroundColor: '#003FFF',
+      wireframe: false
+    };
+
+    // Tentar restaurar última configuração salva
+    let initialConfig = defaultConfig;
+    try {
+      const saved = localStorage.getItem('neat_last_config');
+      if (saved) {
+        initialConfig = { ...defaultConfig, ...JSON.parse(saved) };
+      }
+    } catch (e) {}
+
+    // ============================================================
+    // Inicializar o Neat Gradient
+    // ============================================================
+    const canvas = document.getElementById('gradient');
+    const neat = new NeatGradient({
+      ref: canvas,
+      ...initialConfig
+    });
+
+    // ============================================================
+    // Receber configurações do painel de controle via BroadcastChannel
+    // ============================================================
+    const channel = new BroadcastChannel('neat_sync');
+    channel.onmessage = (event) => {
+      const data = event.data;
+
+      if (data.acao === 'updateConfig' && data.config) {
+        const config = data.config;
+
+        // Atualizar cores
+        if (config.colors) {
+          neat.colors = config.colors;
+        }
+
+        // Atualizar propriedades numéricas
+        const numericProps = [
+          'speed', 'waveAmplitude', 'waveFrequencyX', 'waveFrequencyY',
+          'horizontalPressure', 'verticalPressure',
+          'colorBlending', 'colorSaturation', 'colorBrightness',
+          'shadows', 'highlights'
+        ];
+
+        numericProps.forEach(prop => {
+          if (config[prop] !== undefined) {
+            neat[prop] = parseFloat(config[prop]);
+          }
+        });
+
+        // Background color
+        if (config.backgroundColor) {
+          neat.backgroundColor = config.backgroundColor;
+        }
+
+        // Wireframe
+        if (typeof config.wireframe === 'boolean') {
+          neat.wireframe = config.wireframe;
+        }
+
+        // Salvar config recebida
+        try {
+          localStorage.setItem('neat_last_config', JSON.stringify(config));
+        } catch (e) {}
+
+      } else if (data.acao === 'desligar') {
+        neat.speed = 0;
+      }
+    };
+
+    // Informar ao painel que a exibição está pronta
+    channel.postMessage({ acao: 'exibicao_pronta' });
+  </script>
+
+</body>
+</html>

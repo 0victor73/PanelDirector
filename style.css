@@ -1,0 +1,443 @@
+body {
+  background: #13141A;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f1f1f1;
+  margin: 0;
+  padding: 15px 0;
+}
+
+/* Centralizar painéis horizontalmente */
+body > .painel {
+  margin: 0 auto 15px auto;
+}
+
+body > .cabecalho {
+  margin: 0 auto 15px auto;
+}
+
+h5 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #888;
+  font-family: monospace;
+}
+
+.cabecalho {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 320px;
+}
+
+.painel {
+  background: #272A33;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: box-shadow 1s ease-in-out;
+}
+
+.painel-tema {
+  background: #272A33;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+  flex: 1 1 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Botão de configuração (link) no cabeçalho */
+.botao-config {
+  display: flex;
+}
+.botao-config a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #272A33;
+  border-radius: 5px;
+  color: #f1f1f1;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: background 0.2s;
+}
+.botao-config a:hover {
+  background: #30343c;
+}
+
+.painel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.painel-titulo {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+/* ========== Switch Toggle ========== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch .slider-toggle {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #1e1f25;
+  transition: .4s;
+  border-radius: 22px;
+}
+
+.switch .slider-toggle:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider-toggle {
+  background-color: #235aff;
+}
+
+input:checked + .slider-toggle:before {
+  transform: translateX(18px);
+}
+
+/* ========== Inputs ========== */
+.painel-body {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.painel-body label {
+  font-size: 0.9em;
+  margin: 5px 0 2px;
+}
+
+.painel-body input {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background: #1e1f25;
+  color: #fff;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.painel-body input:focus {
+  background: #4d4e58;
+  outline: none;
+}
+
+/* ========== Range Slider ========== */
+.slider-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #1e1f25;
+  outline: none;
+  margin: 8px 0 14px 0;
+  transition: background 0.3s;
+}
+
+.slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #235aff;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(35, 90, 255, 0.5);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.slider-range::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 12px rgba(35, 90, 255, 0.8);
+  transform: scale(1.15);
+}
+
+.slider-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #235aff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 6px rgba(35, 90, 255, 0.5);
+}
+
+/* ========== Color Picker ========== */
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+
+.color-row label {
+  width: 140px;
+  margin: 0;
+  font-size: 0.95em;
+  flex-shrink: 0;
+}
+
+.painel-body input[type="color"] {
+  width: 44px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 15px;
+  margin-bottom: 0px;
+  background: transparent;
+}
+.painel-body input[type="color"]::-webkit-color-swatch {
+  border-radius: 15px;
+  border: none;
+}
+.painel-body input[type="color"]::-moz-color-swatch {
+  border-radius: 15px;
+  border: none;
+}
+
+/* ========== Botões ========== */
+.painel-botoes {
+  display: flex;
+  gap: 5px;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.botao-salvo {
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #fff;
+  background-color: #3C404D;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0;
+  flex-grow: 1;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.botao-salvo.ativo {
+  background-color: #235aff;
+  box-shadow: 0 0 5px rgba(35, 90, 255, 0.7);
+}
+
+.botao-salvo:hover,
+.botao-salvo:focus,
+.botao:hover,
+.botao:focus {
+  background-color: #3f5581;
+  outline: none;
+}
+
+.lista-botoes {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 0;
+}
+
+.botao {
+  color: #fff;
+  background-color: #3C404D;
+  width: 100%;
+  display: block;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+/* ========== Select ========== */
+select {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background: #1e1f25;
+  color: #fff;
+  font-size: 0.95em;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+select:focus {
+  background: #4d4e58;
+}
+
+select option {
+  background: #1e1f25;
+  color: #fff;
+}
+
+/* ========== Textarea ========== */
+textarea {
+  padding: 10px;
+  width: 278px;
+  line-height: 1.5;
+  border-radius: 5px;
+  background-color: #1e1f25;
+  color: #f1f1f1;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  resize: vertical;
+  margin-top: 5px;
+}
+
+/* ========== Scrollbar personalizada ========== */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #3C404D #1a1b22;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background: #1a1b22;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #3C404D;
+  border-radius: 8px;
+  border: 2px solid #1a1b22;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #3c404d;
+}
+
+/* ========== Banco de Dados Local ========== */
+.lista-resultados {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #1e1f25;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.item-db {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #272A33;
+  transition: background 0.2s;
+}
+
+.item-db:last-child {
+  border-bottom: none;
+}
+
+.item-db:hover {
+  background: #272A33;
+}
+
+.item-db-text {
+  cursor: pointer;
+  flex: 1;
+}
+
+.item-db-nome {
+  font-weight: bold;
+  font-size: 0.95em;
+  color: #fff;
+}
+
+.item-db-info {
+  font-size: 0.8em;
+  color: #a0a0a0;
+}
+
+.btn-excluir-db {
+  background: #3C404D;
+  border: none;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 6px;
+  font-weight: bold;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-excluir-db:hover {
+  background: #ff4d4d;
+}
+
+/* ========== Easter Egg Glow ========== */
+.painel.glow-active {
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8) !important;
+}
+
+.link-voltar {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ========== Slider Value Display ========== */
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.slider-label-row label {
+  margin: 0;
+}
+
+.slider-value {
+  font-size: 0.85em;
+  color: #888;
+  font-family: monospace;
+  min-width: 40px;
+  text-align: right;
+}
