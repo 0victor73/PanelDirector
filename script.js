@@ -100,7 +100,7 @@ function sync() {
   // Salvar última configuração no localStorage
   try {
     localStorage.setItem('neat_last_config', JSON.stringify(config));
-  } catch (e) {}
+  } catch (e) { }
 }
 
 // ============================================================
@@ -125,7 +125,10 @@ function applyConfigToControls(config) {
     if (config[s.prop] !== undefined) {
       const el = document.getElementById(s.id);
       const valEl = document.getElementById(s.valId);
-      if (el) el.value = config[s.prop];
+      if (el) {
+        el.value = config[s.prop];
+        updateSliderBackground(el);
+      }
       if (valEl) {
         const step = el ? parseFloat(el.step) : 0.1;
         const decimals = step < 0.1 ? 2 : 1;
@@ -247,6 +250,19 @@ const PRESETS = {
 };
 
 // ============================================================
+// Atualiza o background do slider para simular o progresso (Webkit)
+// ============================================================
+function updateSliderBackground(el) {
+  if (!el) return;
+  const min = parseFloat(el.min) || 0;
+  const max = parseFloat(el.max) || 100;
+  const val = parseFloat(el.value);
+  const percentage = (val - min) / (max - min) * 100;
+  
+  el.style.background = `linear-gradient(to right, #235aff ${percentage}%, #1e1f25 ${percentage}%)`;
+}
+
+// ============================================================
 // Inicialização
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -255,7 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(s.id);
     const valEl = document.getElementById(s.valId);
     if (el) {
+      updateSliderBackground(el);
       el.addEventListener('input', () => {
+        updateSliderBackground(el);
         if (valEl) {
           const step = parseFloat(el.step);
           const decimals = step < 0.1 ? 2 : 1;
@@ -310,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const config = JSON.parse(saved);
       applyConfigToControls(config);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Enviar config inicial para a exibição
   setTimeout(sync, 300);
