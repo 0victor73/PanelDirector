@@ -60,7 +60,20 @@
       flowDistortionA: 0,
       flowDistortionB: 0,
       flowScale: 1,
-      flowEase: 0
+      flowEase: 0,
+      enableProceduralTexture: false,
+      textureEase: 0.5,
+      textureVoidLikelihood: 0.45,
+      textureVoidWidthMin: 200,
+      textureVoidWidthMax: 486,
+      textureBandDensity: 2.15,
+      textureColorBlending: 0.01,
+      textureSeed: 333,
+      proceduralBackgroundColor: '#000000',
+      textureShapeTriangles: 20,
+      textureShapeCircles: 15,
+      textureShapeBars: 15,
+      textureShapeSquiggles: 10
     };
 
     // Tentar restaurar última configuração salva
@@ -104,7 +117,11 @@
           'shadows', 'highlights', 'resolution',
           'grainIntensity', 'grainScale', 'grainSpeed',
           'backgroundAlpha',
-          'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase'
+          'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase',
+          'textureEase', 'textureVoidLikelihood', 'textureVoidWidthMin',
+          'textureVoidWidthMax', 'textureBandDensity', 'textureColorBlending',
+          'textureSeed', 'textureShapeTriangles', 'textureShapeCircles',
+          'textureShapeBars', 'textureShapeSquiggles'
         ];
 
         numericProps.forEach(prop => {
@@ -113,13 +130,16 @@
           }
         });
 
-        // Background color
+        // Cores únicas
         if (config.backgroundColor) {
           neat.backgroundColor = config.backgroundColor;
         }
+        if (config.proceduralBackgroundColor) {
+          neat.proceduralBackgroundColor = config.proceduralBackgroundColor;
+        }
 
         // Propriedades booleanas
-        const boolProps = ['wireframe', 'flowEnabled'];
+        const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture'];
         boolProps.forEach(prop => {
           if (typeof config[prop] === 'boolean') {
             neat[prop] = config[prop];

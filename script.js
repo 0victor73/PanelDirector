@@ -318,8 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Slots de memória (botões numerados)
-  initSlots();
+  // Import/Export e Presets Customizados
+  initCustomPresets();
 
   // Restaurar última config salva
   try {
@@ -335,56 +335,88 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-// Slots de memória (salvar/carregar presets personalizados)
+// Import / Export e Presets Customizados
 // ============================================================
-function initSlots() {
-  const botoes = document.querySelectorAll('.botao-salvo');
-  let activeSlot = null;
+function initCustomPresets() {
+  const btnExport = document.getElementById('btn-export');
+  const btnImport = document.getElementById('btn-import');
+  const btnSavePreset = document.getElementById('btn-save-preset');
+  const fileImport = document.getElementById('file-import');
+  const customPresetsList = document.getElementById('custom-presets-list');
 
-  // Carregar slots salvos
-  const slots = {};
-  for (let i = 1; i <= 6; i++) {
-    const raw = localStorage.getItem(`neat_slot_${i}`);
-    slots[i] = raw ? JSON.parse(raw) : null;
-  }
-
-  // Atualizar tooltips
-  function updateTitles() {
-    botoes.forEach(b => {
-      const slot = b.getAttribute('data-slot');
-      b.title = slots[slot] ? 'Clique para carregar · Duplo clique para salvar' : 'Duplo clique para salvar';
-    });
-  }
-
-  botoes.forEach(b => {
-    const slot = b.getAttribute('data-slot');
-
-    // Clique simples: carregar
-    b.addEventListener('click', () => {
-      botoes.forEach(btn => btn.classList.remove('ativo'));
-      b.classList.add('ativo');
-      activeSlot = slot;
-
-      if (slots[slot]) {
-        applyConfigToControls(slots[slot]);
-        sync();
-      }
-    });
-
-    // Duplo clique: salvar
-    b.addEventListener('dblclick', () => {
-      const config = buildConfig();
-      slots[slot] = config;
-      localStorage.setItem(`neat_slot_${slot}`, JSON.stringify(config));
-      b.title = 'Salvo! Clique para carregar';
-
-      // Feedback visual
-      b.classList.add('ativo');
-      setTimeout(() => {
-        if (activeSlot !== slot) b.classList.remove('ativo');
-      }, 600);
-    });
+  // Exportar JSON
+  btnExport.addEventListener('click', () => {
+    const config = buildConfig();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "preset_led.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   });
 
-  updateTitles();
+  // Importar JSON
+  btnImport.addEventListener('click', () => fileImport.click());
+  fileImport.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const config = JSON.parse(e.target.result);
+        applyConfigToControls(config);
+        sync();
+      } catch (err) {
+        alert("Erro ao ler o arquivo JSON. Verifique se o formato está correto.");
+      }
+      fileImport.value = ''; // Reset
+    };
+    reader.readAsText(file);
+  });
+
+  // Salvar Novo Preset Customizado
+  let customPresets = [];
+  try {
+    const saved = localStorage.getItem('neat_custom_presets');
+    if (saved) customPresets = JSON.parse(saved);
+  } catch (e) {}
+
+  function renderCustomPresets() {
+    customPresetsList.innerHTML = '';
+    customPresets.forEach((preset, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'botao';
+      btn.textContent = `⭐ ${preset.name}`;
+      btn.title = "Clique esquerdo para aplicar · Clique direito para excluir";
+      
+      btn.addEventListener('click', () => {
+        applyConfigToControls(preset.config);
+        sync();
+      });
+
+      btn.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        if (confirm(`Deseja excluir o preset "${preset.name}"?`)) {
+          customPresets.splice(index, 1);
+          localStorage.setItem('neat_custom_presets', JSON.stringify(customPresets));
+          renderCustomPresets();
+        }
+      });
+
+      customPresetsList.appendChild(btn);
+    });
+  }
+
+  btnSavePreset.addEventListener('click', () => {
+    const nome = prompt("Digite um nome para o seu novo preset:");
+    if (!nome || nome.trim() === "") return;
+    
+    const config = buildConfig();
+    customPresets.push({ name: nome.trim(), config });
+    localStorage.setItem('neat_custom_presets', JSON.stringify(customPresets));
+    renderCustomPresets();
+  });
+
+  renderCustomPresets();
 }
