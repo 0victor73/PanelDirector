@@ -258,7 +258,7 @@ function updateSliderBackground(el) {
   const max = parseFloat(el.max) || 100;
   const val = parseFloat(el.value);
   const percentage = (val - min) / (max - min) * 100;
-  
+
   el.style.background = `linear-gradient(to right, #235aff ${percentage}%, #1e1f25 ${percentage}%)`;
 }
 
@@ -341,38 +341,40 @@ function initCustomPresets() {
   const btnExport = document.getElementById('btn-export');
   const btnImport = document.getElementById('btn-import');
   const btnSavePreset = document.getElementById('btn-save-preset');
-  const fileImport = document.getElementById('file-import');
   const customPresetsList = document.getElementById('custom-presets-list');
 
-  // Exportar JSON
+  // Exportar JSON (Copiar para Área de Transferência)
   btnExport.addEventListener('click', () => {
     const config = buildConfig();
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "preset_led.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    const json = JSON.stringify(config, null, 2);
+
+    navigator.clipboard.writeText(json).then(() => {
+      const originalText = btnExport.textContent;
+      btnExport.textContent = "¡Copiado!";
+      btnExport.style.background = "#2BE19A";
+      setTimeout(() => {
+        btnExport.textContent = originalText;
+        btnExport.style.background = "";
+      }, 2000);
+    }).catch(err => {
+      console.error('Erro ao copiar: ', err);
+      alert("Erro ao copiar para a área de transferência.");
+    });
   });
 
-  // Importar JSON
-  btnImport.addEventListener('click', () => fileImport.click());
-  fileImport.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const config = JSON.parse(e.target.result);
-        applyConfigToControls(config);
-        sync();
-      } catch (err) {
-        alert("Erro ao ler o arquivo JSON. Verifique se o formato está correto.");
-      }
-      fileImport.value = ''; // Reset
-    };
-    reader.readAsText(file);
+  // Importar JSON (Colar de Texto)
+  btnImport.addEventListener('click', () => {
+    const json = prompt("Cole o código JSON do seu preset aqui:");
+    if (!json) return;
+
+    try {
+      const config = JSON.parse(json);
+      applyConfigToControls(config);
+      sync();
+      alert("Configuração aplicada com sucesso!");
+    } catch (err) {
+      alert("Erro ao ler o código JSON. Verifique se ele foi copiado corretamente.");
+    }
   });
 
   // Salvar Novo Preset Customizado
@@ -380,23 +382,37 @@ function initCustomPresets() {
   try {
     const saved = localStorage.getItem('neat_custom_presets');
     if (saved) customPresets = JSON.parse(saved);
-  } catch (e) {}
+  } catch (e) { }
 
   function renderCustomPresets() {
     customPresetsList.innerHTML = '';
     customPresets.forEach((preset, index) => {
+      const container = document.createElement('div');
+      container.className = 'preset-item';
+
       const btn = document.createElement('button');
       btn.className = 'botao';
-      btn.textContent = `⭐ ${preset.name}`;
-      btn.title = "Clique esquerdo para aplicar · Clique direito para excluir";
-      
+      btn.textContent = `${preset.name}`;
+
       btn.addEventListener('click', () => {
         applyConfigToControls(preset.config);
         sync();
       });
 
-      btn.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn-delete-preset';
+      delBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+      `;
+      delBtn.title = "Excluir preset";
+
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (confirm(`Deseja excluir o preset "${preset.name}"?`)) {
           customPresets.splice(index, 1);
           localStorage.setItem('neat_custom_presets', JSON.stringify(customPresets));
@@ -404,14 +420,16 @@ function initCustomPresets() {
         }
       });
 
-      customPresetsList.appendChild(btn);
+      container.appendChild(btn);
+      container.appendChild(delBtn);
+      customPresetsList.appendChild(container);
     });
   }
 
   btnSavePreset.addEventListener('click', () => {
     const nome = prompt("Digite um nome para o seu novo preset:");
     if (!nome || nome.trim() === "") return;
-    
+
     const config = buildConfig();
     customPresets.push({ name: nome.trim(), config });
     localStorage.setItem('neat_custom_presets', JSON.stringify(customPresets));

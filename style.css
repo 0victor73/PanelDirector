@@ -342,6 +342,42 @@ input:checked+.slider-toggle:before {
   transition: background-color 0.2s, box-shadow 0.2s;
 }
 
+.preset-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.preset-item .botao {
+  flex: 1;
+}
+
+.btn-delete-preset {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #ff5373;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+}
+
+.btn-delete-preset:hover {
+  background: rgba(255, 83, 115, 0.2);
+  transform: scale(1.05);
+}
+
+.btn-delete-preset svg {
+  pointer-events: none;
+}
+
 /* ========== Select ========== */
 select {
   padding: 8px;

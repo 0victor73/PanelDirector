@@ -95,6 +95,71 @@
     });
 
     // ============================================================
+    // Receber configurações do OBS (via Plugin Python)
+    // ============================================================
+    window.addEventListener('obsSourceSettingsUpdated', (event) => {
+      const settings = event.detail;
+      if (settings.neat_config) {
+        try {
+          const config = JSON.parse(settings.neat_config);
+          applyConfig(config);
+        } catch (e) {
+          console.error("Erro ao processar neat_config do OBS:", e);
+        }
+      }
+    });
+
+    // Função auxiliar para aplicar configuração
+    function applyConfig(config) {
+      // Atualizar cores
+      if (config.colors) {
+        neat.colors = config.colors;
+      }
+
+      // Atualizar todas as propriedades numéricas
+      const numericProps = [
+        'speed', 'waveAmplitude', 'waveFrequencyX', 'waveFrequencyY',
+        'horizontalPressure', 'verticalPressure',
+        'colorBlending', 'colorSaturation', 'colorBrightness',
+        'shadows', 'highlights', 'resolution',
+        'grainIntensity', 'grainScale', 'grainSpeed',
+        'backgroundAlpha',
+        'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase',
+        'textureEase', 'textureVoidLikelihood', 'textureVoidWidthMin',
+        'textureVoidWidthMax', 'textureBandDensity', 'textureColorBlending',
+        'textureSeed', 'textureShapeTriangles', 'textureShapeCircles',
+        'textureShapeBars', 'textureShapeSquiggles'
+      ];
+
+      numericProps.forEach(prop => {
+        if (config[prop] !== undefined) {
+          neat[prop] = parseFloat(config[prop]);
+        }
+      });
+
+      // Cores únicas
+      if (config.backgroundColor) {
+        neat.backgroundColor = config.backgroundColor;
+      }
+      if (config.proceduralBackgroundColor) {
+        neat.proceduralBackgroundColor = config.proceduralBackgroundColor;
+      }
+
+      // Propriedades booleanas
+      const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture'];
+      boolProps.forEach(prop => {
+        if (typeof config[prop] === 'boolean') {
+          neat[prop] = config[prop];
+        }
+      });
+
+      // Salvar config recebida
+      try {
+        localStorage.setItem('neat_last_config', JSON.stringify(config));
+      } catch (e) {}
+    }
+
+    // ============================================================
     // Receber configurações do painel de controle via BroadcastChannel
     // ============================================================
     const channel = new BroadcastChannel('neat_sync');
@@ -102,55 +167,7 @@
       const data = event.data;
 
       if (data.acao === 'updateConfig' && data.config) {
-        const config = data.config;
-
-        // Atualizar cores
-        if (config.colors) {
-          neat.colors = config.colors;
-        }
-
-        // Atualizar todas as propriedades numéricas
-        const numericProps = [
-          'speed', 'waveAmplitude', 'waveFrequencyX', 'waveFrequencyY',
-          'horizontalPressure', 'verticalPressure',
-          'colorBlending', 'colorSaturation', 'colorBrightness',
-          'shadows', 'highlights', 'resolution',
-          'grainIntensity', 'grainScale', 'grainSpeed',
-          'backgroundAlpha',
-          'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase',
-          'textureEase', 'textureVoidLikelihood', 'textureVoidWidthMin',
-          'textureVoidWidthMax', 'textureBandDensity', 'textureColorBlending',
-          'textureSeed', 'textureShapeTriangles', 'textureShapeCircles',
-          'textureShapeBars', 'textureShapeSquiggles'
-        ];
-
-        numericProps.forEach(prop => {
-          if (config[prop] !== undefined) {
-            neat[prop] = parseFloat(config[prop]);
-          }
-        });
-
-        // Cores únicas
-        if (config.backgroundColor) {
-          neat.backgroundColor = config.backgroundColor;
-        }
-        if (config.proceduralBackgroundColor) {
-          neat.proceduralBackgroundColor = config.proceduralBackgroundColor;
-        }
-
-        // Propriedades booleanas
-        const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture'];
-        boolProps.forEach(prop => {
-          if (typeof config[prop] === 'boolean') {
-            neat[prop] = config[prop];
-          }
-        });
-
-        // Salvar config recebida
-        try {
-          localStorage.setItem('neat_last_config', JSON.stringify(config));
-        } catch (e) {}
-
+        applyConfig(data.config);
       } else if (data.acao === 'desligar') {
         neat.speed = 0;
       }
