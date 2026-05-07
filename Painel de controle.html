@@ -389,14 +389,183 @@
         </div>
     </div>
 
+    <div class="painel" id="painel-offsets">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Offsets & Grain</h3>
+        </div>
+        <div class="painel-body">
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Grain Sparsity</label>
+                    <span class="slider-value" id="grainSparsity-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="grainSparsity" min="0" max="1" step="0.01" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Y Offset</label>
+                    <span class="slider-value" id="yOffset-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="yOffset" min="-10" max="10" step="0.1" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Y Offset Wave Multiplier</label>
+                    <span class="slider-value" id="yOffsetWaveMultiplier-val">5.5</span>
+                </div>
+                <input type="range" class="slider-range" id="yOffsetWaveMultiplier" min="0" max="20" step="0.1"
+                    value="5.5">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Y Offset Color Multiplier</label>
+                    <span class="slider-value" id="yOffsetColorMultiplier-val">5.2</span>
+                </div>
+                <input type="range" class="slider-range" id="yOffsetColorMultiplier" min="0" max="20" step="0.1"
+                    value="5.2">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Y Offset Flow Multiplier</label>
+                    <span class="slider-value" id="yOffsetFlowMultiplier-val">6.0</span>
+                </div>
+                <input type="range" class="slider-range" id="yOffsetFlowMultiplier" min="0" max="20" step="0.1"
+                    value="6.0">
+            </div>
+        </div>
+    </div>
+
+    <div class="painel" id="painel-warp">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Warp & Vignette</h3>
+        </div>
+        <div class="painel-body">
+            <div class="color-row">
+                <label>Domain Warp Enabled</label>
+                <label class="switch"><input type="checkbox" id="domainWarpEnabled"><span
+                        class="slider-toggle"></span></label>
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Warp Intensity</label>
+                    <span class="slider-value" id="domainWarpIntensity-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="domainWarpIntensity" min="0" max="10" step="0.1" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Warp Scale</label>
+                    <span class="slider-value" id="domainWarpScale-val">3</span>
+                </div>
+                <input type="range" class="slider-range" id="domainWarpScale" min="0" max="10" step="0.1" value="3">
+            </div>
+            <hr style="border: 0; border-top: 1px solid #3c404d; margin: 10px 0;">
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Vignette Intensity</label>
+                    <span class="slider-value" id="vignetteIntensity-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="vignetteIntensity" min="0" max="1" step="0.01" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Vignette Radius</label>
+                    <span class="slider-value" id="vignetteRadius-val">0.8</span>
+                </div>
+                <input type="range" class="slider-range" id="vignetteRadius" min="0" max="2" step="0.01" value="0.8">
+            </div>
+        </div>
+    </div>
+
+    <div class="painel" id="painel-fresnel">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Fresnel & Iridescence</h3>
+        </div>
+        <div class="painel-body">
+            <div class="color-row">
+                <label>Fresnel Enabled</label>
+                <label class="switch"><input type="checkbox" id="fresnelEnabled"><span
+                        class="slider-toggle"></span></label>
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Fresnel Power</label>
+                    <span class="slider-value" id="fresnelPower-val">2</span>
+                </div>
+                <input type="range" class="slider-range" id="fresnelPower" min="0.1" max="10" step="0.1" value="2">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Fresnel Intensity</label>
+                    <span class="slider-value" id="fresnelIntensity-val">0.5</span>
+                </div>
+                <input type="range" class="slider-range" id="fresnelIntensity" min="0" max="2" step="0.01" value="0.5">
+            </div>
+            <div class="color-row">
+                <label>Fresnel Color</label>
+                <input type="color" id="fresnelColor" value="#FFFFFF">
+            </div>
+            <hr style="border: 0; border-top: 1px solid #3c404d; margin: 10px 0;">
+            <div class="color-row">
+                <label>Iridescence Enabled</label>
+                <label class="switch"><input type="checkbox" id="iridescenceEnabled"><span
+                        class="slider-toggle"></span></label>
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Iridescence Intensity</label>
+                    <span class="slider-value" id="iridescenceIntensity-val">0.5</span>
+                </div>
+                <input type="range" class="slider-range" id="iridescenceIntensity" min="0" max="2" step="0.01"
+                    value="0.5">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Iridescence Speed</label>
+                    <span class="slider-value" id="iridescenceSpeed-val">1</span>
+                </div>
+                <input type="range" class="slider-range" id="iridescenceSpeed" min="0" max="10" step="0.1" value="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="painel" id="painel-effects">
+        <div class="painel-header">
+            <h3 class="painel-titulo">Post Processing</h3>
+        </div>
+        <div class="painel-body">
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Bloom Intensity</label>
+                    <span class="slider-value" id="bloomIntensity-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="bloomIntensity" min="0" max="5" step="0.1" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Bloom Threshold</label>
+                    <span class="slider-value" id="bloomThreshold-val">0.7</span>
+                </div>
+                <input type="range" class="slider-range" id="bloomThreshold" min="0" max="1" step="0.01" value="0.7">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label-row">
+                    <label>Chromatic Aberration</label>
+                    <span class="slider-value" id="chromaticAberration-val">0</span>
+                </div>
+                <input type="range" class="slider-range" id="chromaticAberration" min="0" max="10" step="0.1" value="0">
+            </div>
+        </div>
+    </div>
+
     <div class="painel" id="painel-presets">
         <div class="painel-header">
             <h3 class="painel-titulo">Presets</h3>
         </div>
         <div class="painel-body">
             <div class="painel-acoes-extra" style="display: flex; gap: 8px; margin-bottom: 15px;">
-                <button class="botao" id="btn-export">Copiar JSON</button>
-                <button class="botao" id="btn-import">Colar JSON</button>
+                <button class="botao" id="btn-export">Copiar configs</button>
+                <button class="botao" id="btn-import">Colar configs</button>
                 <button class="botao" id="btn-save-preset">Salvar Novo</button>
             </div>
 

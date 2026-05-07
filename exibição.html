@@ -17,6 +17,12 @@
       width: 100vw;
       height: 100vh;
     }
+    /* Remover marca d'água da biblioteca */
+    a {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   </style>
 </head>
 <body>
@@ -73,7 +79,27 @@
       textureShapeTriangles: 20,
       textureShapeCircles: 15,
       textureShapeBars: 15,
-      textureShapeSquiggles: 10
+      textureShapeSquiggles: 10,
+      grainSparsity: 0,
+      yOffset: 0,
+      yOffsetWaveMultiplier: 5.5,
+      yOffsetColorMultiplier: 5.2,
+      yOffsetFlowMultiplier: 6,
+      domainWarpEnabled: false,
+      domainWarpIntensity: 0,
+      domainWarpScale: 3,
+      vignetteIntensity: 0,
+      vignetteRadius: 0.8,
+      fresnelEnabled: false,
+      fresnelPower: 2,
+      fresnelIntensity: 0.5,
+      fresnelColor: '#FFFFFF',
+      iridescenceEnabled: false,
+      iridescenceIntensity: 0.5,
+      iridescenceSpeed: 1,
+      bloomIntensity: 0,
+      bloomThreshold: 0.7,
+      chromaticAberration: 0
     };
 
     // Tentar restaurar última configuração salva
@@ -128,7 +154,14 @@
         'textureEase', 'textureVoidLikelihood', 'textureVoidWidthMin',
         'textureVoidWidthMax', 'textureBandDensity', 'textureColorBlending',
         'textureSeed', 'textureShapeTriangles', 'textureShapeCircles',
-        'textureShapeBars', 'textureShapeSquiggles'
+        'textureShapeBars', 'textureShapeSquiggles',
+        'grainSparsity', 'yOffset', 'yOffsetWaveMultiplier',
+        'yOffsetColorMultiplier', 'yOffsetFlowMultiplier',
+        'domainWarpIntensity', 'domainWarpScale',
+        'vignetteIntensity', 'vignetteRadius',
+        'fresnelPower', 'fresnelIntensity',
+        'iridescenceIntensity', 'iridescenceSpeed',
+        'bloomIntensity', 'bloomThreshold', 'chromaticAberration'
       ];
 
       numericProps.forEach(prop => {
@@ -144,9 +177,12 @@
       if (config.proceduralBackgroundColor) {
         neat.proceduralBackgroundColor = config.proceduralBackgroundColor;
       }
+      if (config.fresnelColor) {
+        neat.fresnelColor = config.fresnelColor;
+      }
 
       // Propriedades booleanas
-      const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture'];
+      const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture', 'domainWarpEnabled', 'fresnelEnabled', 'iridescenceEnabled'];
       boolProps.forEach(prop => {
         if (typeof config[prop] === 'boolean') {
           neat[prop] = config[prop];

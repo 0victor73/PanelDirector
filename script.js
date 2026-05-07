@@ -37,6 +37,29 @@ const SLIDERS = [
   { id: 'textureShapeCircles', valId: 'textureShapeCircles-val', prop: 'textureShapeCircles' },
   { id: 'textureShapeBars', valId: 'textureShapeBars-val', prop: 'textureShapeBars' },
   { id: 'textureShapeSquiggles', valId: 'textureShapeSquiggles-val', prop: 'textureShapeSquiggles' },
+  // Grain Extra
+  { id: 'grainSparsity', valId: 'grainSparsity-val', prop: 'grainSparsity' },
+  // Offsets
+  { id: 'yOffset', valId: 'yOffset-val', prop: 'yOffset' },
+  { id: 'yOffsetWaveMultiplier', valId: 'yOffsetWaveMultiplier-val', prop: 'yOffsetWaveMultiplier' },
+  { id: 'yOffsetColorMultiplier', valId: 'yOffsetColorMultiplier-val', prop: 'yOffsetColorMultiplier' },
+  { id: 'yOffsetFlowMultiplier', valId: 'yOffsetFlowMultiplier-val', prop: 'yOffsetFlowMultiplier' },
+  // Domain Warp
+  { id: 'domainWarpIntensity', valId: 'domainWarpIntensity-val', prop: 'domainWarpIntensity' },
+  { id: 'domainWarpScale', valId: 'domainWarpScale-val', prop: 'domainWarpScale' },
+  // Vignette
+  { id: 'vignetteIntensity', valId: 'vignetteIntensity-val', prop: 'vignetteIntensity' },
+  { id: 'vignetteRadius', valId: 'vignetteRadius-val', prop: 'vignetteRadius' },
+  // Fresnel
+  { id: 'fresnelPower', valId: 'fresnelPower-val', prop: 'fresnelPower' },
+  { id: 'fresnelIntensity', valId: 'fresnelIntensity-val', prop: 'fresnelIntensity' },
+  // Iridescence
+  { id: 'iridescenceIntensity', valId: 'iridescenceIntensity-val', prop: 'iridescenceIntensity' },
+  { id: 'iridescenceSpeed', valId: 'iridescenceSpeed-val', prop: 'iridescenceSpeed' },
+  // Effects
+  { id: 'bloomIntensity', valId: 'bloomIntensity-val', prop: 'bloomIntensity' },
+  { id: 'bloomThreshold', valId: 'bloomThreshold-val', prop: 'bloomThreshold' },
+  { id: 'chromaticAberration', valId: 'chromaticAberration-val', prop: 'chromaticAberration' },
 ];
 
 // Toggles (checkboxes que não são cores)
@@ -44,6 +67,9 @@ const TOGGLES = [
   { id: 'wireframe', prop: 'wireframe' },
   { id: 'flowEnabled', prop: 'flowEnabled' },
   { id: 'enableProceduralTexture', prop: 'enableProceduralTexture' },
+  { id: 'domainWarpEnabled', prop: 'domainWarpEnabled' },
+  { id: 'fresnelEnabled', prop: 'fresnelEnabled' },
+  { id: 'iridescenceEnabled', prop: 'iridescenceEnabled' },
 ];
 
 // Número de cores
@@ -80,6 +106,10 @@ function buildConfig() {
   // Procedural background color
   const pbgEl = document.getElementById('proceduralBackgroundColor');
   if (pbgEl) config.proceduralBackgroundColor = pbgEl.value;
+
+  // Fresnel color
+  const frcEl = document.getElementById('fresnelColor');
+  if (frcEl) config.fresnelColor = frcEl.value;
 
   // Toggles
   TOGGLES.forEach(t => {
@@ -147,6 +177,12 @@ function applyConfigToControls(config) {
   if (config.proceduralBackgroundColor) {
     const pbgEl = document.getElementById('proceduralBackgroundColor');
     if (pbgEl) pbgEl.value = config.proceduralBackgroundColor;
+  }
+
+  // Fresnel color
+  if (config.fresnelColor) {
+    const frcEl = document.getElementById('fresnelColor');
+    if (frcEl) frcEl.value = config.fresnelColor;
   }
 
   // Toggles
@@ -300,6 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const pbgEl = document.getElementById('proceduralBackgroundColor');
   if (pbgEl) pbgEl.addEventListener('input', sync);
 
+  const frcEl = document.getElementById('fresnelColor');
+  if (frcEl) frcEl.addEventListener('input', sync);
+
   // Toggles
   TOGGLES.forEach(t => {
     const el = document.getElementById(t.id);
@@ -364,16 +403,23 @@ function initCustomPresets() {
 
   // Importar JSON (Colar de Texto)
   btnImport.addEventListener('click', () => {
-    const json = prompt("Cole o código JSON do seu preset aqui:");
-    if (!json) return;
+    const jsonStr = prompt("Cole o código JSON do seu preset aqui:");
+    if (!jsonStr) return;
 
     try {
-      const config = JSON.parse(json);
-      applyConfigToControls(config);
-      sync();
-      alert("Configuração aplicada com sucesso!");
+      // Usando Function em vez de JSON.parse para suportar chaves sem aspas, aspas simples, etc.
+      const config = (new Function("return " + jsonStr))();
+      
+      if (typeof config === 'object' && config !== null) {
+        applyConfigToControls(config);
+        sync();
+        alert("Configuração aplicada com sucesso!");
+      } else {
+        throw new Error("O código não é um objeto válido.");
+      }
     } catch (err) {
-      alert("Erro ao ler o código JSON. Verifique se ele foi copiado corretamente.");
+      console.error(err);
+      alert("Erro ao ler o código. Verifique se ele foi copiado corretamente (falta de colchetes ou chaves).");
     }
   });
 
