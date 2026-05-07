@@ -213,7 +213,13 @@ const PRESETS = {
     resolution: 1, grainIntensity: 0.05, grainScale: 2, grainSpeed: 1,
     backgroundColor: '#0a0a2e', backgroundAlpha: 1,
     wireframe: false, flowEnabled: true,
-    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0,
+    grainSparsity: 0, yOffset: 0, yOffsetWaveMultiplier: 5.5, yOffsetColorMultiplier: 5.2,
+    yOffsetFlowMultiplier: 6, domainWarpIntensity: 0, domainWarpScale: 3,
+    vignetteIntensity: 0, vignetteRadius: 0.8, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 0.5, iridescenceSpeed: 1, bloomIntensity: 0, bloomThreshold: 0.7,
+    chromaticAberration: 0, proceduralBackgroundColor: "#000000", fresnelColor: "#ffffff",
+    enableProceduralTexture: false, domainWarpEnabled: false, fresnelEnabled: false, iridescenceEnabled: false
   },
   celebracao: {
     colors: [
@@ -230,7 +236,13 @@ const PRESETS = {
     resolution: 1, grainIntensity: 0, grainScale: 2, grainSpeed: 1,
     backgroundColor: '#ff6600', backgroundAlpha: 1,
     wireframe: false, flowEnabled: true,
-    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0,
+    grainSparsity: 0, yOffset: 0, yOffsetWaveMultiplier: 5.5, yOffsetColorMultiplier: 5.2,
+    yOffsetFlowMultiplier: 6, domainWarpIntensity: 0, domainWarpScale: 3,
+    vignetteIntensity: 0.2, vignetteRadius: 1.2, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 0.5, iridescenceSpeed: 1, bloomIntensity: 0.5, bloomThreshold: 0.8,
+    chromaticAberration: 0.1, proceduralBackgroundColor: "#000000", fresnelColor: "#ffffff",
+    enableProceduralTexture: false, domainWarpEnabled: false, fresnelEnabled: false, iridescenceEnabled: false
   },
   pregacao: {
     colors: [
@@ -247,7 +259,13 @@ const PRESETS = {
     resolution: 1, grainIntensity: 0.1, grainScale: 3, grainSpeed: 0.5,
     backgroundColor: '#1a1a2e', backgroundAlpha: 1,
     wireframe: false, flowEnabled: true,
-    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0
+    flowDistortionA: 0, flowDistortionB: 0, flowScale: 1, flowEase: 0,
+    grainSparsity: 0, yOffset: 0, yOffsetWaveMultiplier: 5.5, yOffsetColorMultiplier: 5.2,
+    yOffsetFlowMultiplier: 6, domainWarpIntensity: 0, domainWarpScale: 3,
+    vignetteIntensity: 0, vignetteRadius: 0.8, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 0.5, iridescenceSpeed: 1, bloomIntensity: 0, bloomThreshold: 0.7,
+    chromaticAberration: 0, proceduralBackgroundColor: "#000000", fresnelColor: "#ffffff",
+    enableProceduralTexture: false, domainWarpEnabled: false, fresnelEnabled: false, iridescenceEnabled: false
   },
   ceu: {
     colors: [
@@ -264,7 +282,13 @@ const PRESETS = {
     resolution: 1, grainIntensity: 0.15, grainScale: 2, grainSpeed: 0.3,
     backgroundColor: '#000011', backgroundAlpha: 1,
     wireframe: false, flowEnabled: true,
-    flowDistortionA: 1, flowDistortionB: 0.5, flowScale: 2, flowEase: 0.3
+    flowDistortionA: 1, flowDistortionB: 0.5, flowScale: 2, flowEase: 0.3,
+    grainSparsity: 0, yOffset: 0, yOffsetWaveMultiplier: 5.5, yOffsetColorMultiplier: 5.2,
+    yOffsetFlowMultiplier: 6, domainWarpIntensity: 0.2, domainWarpScale: 4,
+    vignetteIntensity: 0.4, vignetteRadius: 0.6, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 0.5, iridescenceSpeed: 1, bloomIntensity: 0.2, bloomThreshold: 0.7,
+    chromaticAberration: 0.05, proceduralBackgroundColor: "#000000", fresnelColor: "#ffffff",
+    enableProceduralTexture: false, domainWarpEnabled: true, fresnelEnabled: false, iridescenceEnabled: false
   },
   fogo: {
     colors: [
@@ -281,7 +305,39 @@ const PRESETS = {
     resolution: 1, grainIntensity: 0, grainScale: 2, grainSpeed: 1,
     backgroundColor: '#1a0000', backgroundAlpha: 1,
     wireframe: false, flowEnabled: true,
-    flowDistortionA: 2, flowDistortionB: 1, flowScale: 3, flowEase: 0.1
+    flowDistortionA: 2, flowDistortionB: 1, flowScale: 3, flowEase: 0.1,
+    grainSparsity: 0, yOffset: 0, yOffsetWaveMultiplier: 5.5, yOffsetColorMultiplier: 5.2,
+    yOffsetFlowMultiplier: 6, domainWarpIntensity: 0, domainWarpScale: 3,
+    vignetteIntensity: 0, vignetteRadius: 0.8, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 0.8, iridescenceSpeed: 2, bloomIntensity: 1.5, bloomThreshold: 0.6,
+    chromaticAberration: 0.3, proceduralBackgroundColor: "#000000", fresnelColor: "#ffffff",
+    enableProceduralTexture: false, domainWarpEnabled: false, fresnelEnabled: false, iridescenceEnabled: true
+  },
+  agua: {
+    colors: [
+      { color: "#0055ff", enabled: true },
+      { color: "#00eaff", enabled: true },
+      { color: "#ffffff", enabled: true },
+      { color: "#6ae6c8", enabled: true },
+      { color: "#0e55c7", enabled: true },
+      { color: "#2e7075", enabled: true }
+    ],
+    speed: 4, waveAmplitude: 2, waveFrequencyX: 3, waveFrequencyY: 2,
+    horizontalPressure: 3, verticalPressure: 4, colorBlending: 9,
+    colorSaturation: 2, colorBrightness: 1.05, shadows: 7, highlights: 5,
+    resolution: 0.5, grainIntensity: 0.05, grainScale: 2, grainSpeed: 1,
+    backgroundAlpha: 1, flowDistortionA: 3.7, flowDistortionB: 1.4,
+    flowScale: 2.9, flowEase: 0.32, textureEase: 0.25, textureVoidLikelihood: 0.27,
+    textureVoidWidthMin: 60, textureVoidWidthMax: 420, textureBandDensity: 1.2,
+    textureColorBlending: 0.06, textureSeed: 342, textureShapeTriangles: 20,
+    textureShapeCircles: 15, textureShapeBars: 15, textureShapeSquiggles: 10,
+    grainSparsity: 0, yOffset: 10, yOffsetWaveMultiplier: 8.5, yOffsetColorMultiplier: 7.8,
+    yOffsetFlowMultiplier: 9, domainWarpIntensity: 0.7, domainWarpScale: 6.6,
+    vignetteIntensity: 1, vignetteRadius: 0.8, fresnelPower: 2, fresnelIntensity: 0.5,
+    iridescenceIntensity: 1, iridescenceSpeed: 1, bloomIntensity: 2.1, bloomThreshold: 0.7,
+    chromaticAberration: 2.7, backgroundColor: "#727683", proceduralBackgroundColor: "#0e0707",
+    fresnelColor: "#ffffff", wireframe: false, flowEnabled: false, enableProceduralTexture: false,
+    domainWarpEnabled: true, fresnelEnabled: false, iridescenceEnabled: false
   }
 };
 
@@ -409,7 +465,7 @@ function initCustomPresets() {
     try {
       // Usando Function em vez de JSON.parse para suportar chaves sem aspas, aspas simples, etc.
       const config = (new Function("return " + jsonStr))();
-      
+
       if (typeof config === 'object' && config !== null) {
         applyConfigToControls(config);
         sync();
