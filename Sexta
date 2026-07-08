@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exibição - LED</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas#gradient {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    /* Remover marca d'água da biblioteca */
+    a {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="gradient"></canvas>
+
+  <script type="module">
+    import { NeatGradient } from 'https://cdn.jsdelivr.net/npm/@firecms/neat/+esm';
+
+    // ============================================================
+    // Configuração padrão inicial
+    // ============================================================
+    const defaultConfig = {
+  "colors": [
+    {
+      "color": "#94c8ff",
+      "enabled": true
+    },
+    {
+      "color": "#75bcff",
+      "enabled": false
+    },
+    {
+      "color": "#c3d9fe",
+      "enabled": false
+    },
+    {
+      "color": "#8ac6f5",
+      "enabled": false
+    },
+    {
+      "color": "#b392f0",
+      "enabled": false
+    },
+    {
+      "color": "#e0d4ff",
+      "enabled": false
+    }
+  ],
+  "speed": 0.6,
+  "waveAmplitude": 5.4,
+  "waveFrequencyX": 1.5,
+  "waveFrequencyY": 2.3,
+  "horizontalPressure": 9.8,
+  "verticalPressure": 9.7,
+  "colorBlending": 6.1,
+  "colorSaturation": 0.3,
+  "colorBrightness": 1,
+  "shadows": 0,
+  "highlights": 10,
+  "resolution": 0.6,
+  "grainIntensity": 0.05,
+  "grainScale": 2,
+  "grainSpeed": 2,
+  "backgroundAlpha": 1,
+  "flowDistortionA": 0,
+  "flowDistortionB": 0,
+  "flowScale": 1,
+  "flowEase": 0,
+  "textureEase": 0.25,
+  "textureVoidLikelihood": 0.27,
+  "textureVoidWidthMin": 60,
+  "textureVoidWidthMax": 420,
+  "textureBandDensity": 1.2,
+  "textureColorBlending": 0.06,
+  "textureSeed": 342,
+  "textureShapeTriangles": 20,
+  "textureShapeCircles": 15,
+  "textureShapeBars": 15,
+  "textureShapeSquiggles": 10,
+  "grainSparsity": 0,
+  "yOffset": 0,
+  "yOffsetWaveMultiplier": 5.5,
+  "yOffsetColorMultiplier": 5.2,
+  "yOffsetFlowMultiplier": 6,
+  "domainWarpIntensity": 0,
+  "domainWarpScale": 3,
+  "vignetteIntensity": 0,
+  "vignetteRadius": 0.8,
+  "fresnelPower": 2,
+  "fresnelIntensity": 0.5,
+  "iridescenceIntensity": 0.5,
+  "iridescenceSpeed": 1,
+  "bloomIntensity": 0,
+  "bloomThreshold": 0.7,
+  "chromaticAberration": 0,
+  "backgroundColor": "#0a0a2e",
+  "proceduralBackgroundColor": "#000000",
+  "fresnelColor": "#ffffff",
+  "wireframe": false,
+  "flowEnabled": true,
+  "enableProceduralTexture": false,
+  "domainWarpEnabled": false,
+  "fresnelEnabled": false,
+  "iridescenceEnabled": false
+};
+
+    // Tentar restaurar última configuração salva
+    let initialConfig = defaultConfig;
+    try {
+      const saved = localStorage.getItem('neat_last_config');
+      if (saved) {
+        initialConfig = { ...defaultConfig, ...JSON.parse(saved) };
+      }
+    } catch (e) {}
+
+    // ============================================================
+    // Inicializar o Neat Gradient
+    // ============================================================
+    const canvas = document.getElementById('gradient');
+    const neat = new NeatGradient({
+      ref: canvas,
+      ...initialConfig
+    });
+
+    // ============================================================
+    // Receber configurações do OBS (via Plugin Python)
+    // ============================================================
+    window.addEventListener('obsSourceSettingsUpdated', (event) => {
+      const settings = event.detail;
+      if (settings.neat_config) {
+        try {
+          const config = JSON.parse(settings.neat_config);
+          applyConfig(config);
+        } catch (e) {
+          console.error("Erro ao processar neat_config do OBS:", e);
+        }
+      }
+    });
+
+    // Função auxiliar para aplicar configuração
+    function applyConfig(config) {
+      // Atualizar cores
+      if (config.colors) {
+        neat.colors = config.colors;
+      }
+
+      // Atualizar todas as propriedades numéricas
+      const numericProps = [
+        'speed', 'waveAmplitude', 'waveFrequencyX', 'waveFrequencyY',
+        'horizontalPressure', 'verticalPressure',
+        'colorBlending', 'colorSaturation', 'colorBrightness',
+        'shadows', 'highlights', 'resolution',
+        'grainIntensity', 'grainScale', 'grainSpeed',
+        'backgroundAlpha',
+        'flowDistortionA', 'flowDistortionB', 'flowScale', 'flowEase',
+        'textureEase', 'textureVoidLikelihood', 'textureVoidWidthMin',
+        'textureVoidWidthMax', 'textureBandDensity', 'textureColorBlending',
+        'textureSeed', 'textureShapeTriangles', 'textureShapeCircles',
+        'textureShapeBars', 'textureShapeSquiggles',
+        'grainSparsity', 'yOffset', 'yOffsetWaveMultiplier',
+        'yOffsetColorMultiplier', 'yOffsetFlowMultiplier',
+        'domainWarpIntensity', 'domainWarpScale',
+        'vignetteIntensity', 'vignetteRadius',
+        'fresnelPower', 'fresnelIntensity',
+        'iridescenceIntensity', 'iridescenceSpeed',
+        'bloomIntensity', 'bloomThreshold', 'chromaticAberration'
+      ];
+
+      numericProps.forEach(prop => {
+        if (config[prop] !== undefined) {
+          neat[prop] = parseFloat(config[prop]);
+        }
+      });
+
+      // Cores únicas
+      if (config.backgroundColor) {
+        neat.backgroundColor = config.backgroundColor;
+      }
+      if (config.proceduralBackgroundColor) {
+        neat.proceduralBackgroundColor = config.proceduralBackgroundColor;
+      }
+      if (config.fresnelColor) {
+        neat.fresnelColor = config.fresnelColor;
+      }
+
+      // Propriedades booleanas
+      const boolProps = ['wireframe', 'flowEnabled', 'enableProceduralTexture', 'domainWarpEnabled', 'fresnelEnabled', 'iridescenceEnabled'];
+      boolProps.forEach(prop => {
+        if (typeof config[prop] === 'boolean') {
+          neat[prop] = config[prop];
+        }
+      });
+
+      // Salvar config recebida
+      try {
+        localStorage.setItem('neat_last_config', JSON.stringify(config));
+      } catch (e) {}
+    }
+
+    // ============================================================
+    // Receber configurações do painel de controle via BroadcastChannel
+    // ============================================================
+    const channel = new BroadcastChannel('neat_sync');
+    channel.onmessage = (event) => {
+      const data = event.data;
+
+      if (data.acao === 'updateConfig' && data.config) {
+        applyConfig(data.config);
+      } else if (data.acao === 'desligar') {
+        neat.speed = 0;
+      }
+    };
+
+    // Informar ao painel que a exibição está pronta
+    channel.postMessage({ acao: 'exibicao_pronta' });
+  </script>
+
+</body>
+</html>
